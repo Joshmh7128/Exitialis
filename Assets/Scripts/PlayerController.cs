@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     // the transform that we want to mimic. this moves jaggedly and roughly so that we may lerp to it.
     [SerializeField] Transform mimicTransform, targetTransform;
     // our containers which serve multiple functions to align the camera position
-    [SerializeField] Transform cameraContainer, cameraZPosContainer; // the container that holds our camera
+    [SerializeField] Transform cameraContainer, cameraZPosContainer, alignedReferenceForward; // the container that holds our camera
     // our smoothed speeds for rotation and movement
     [SerializeField] float rotationSlerpSpeed; 
     [SerializeField] float movementLerpSpeed;
@@ -45,22 +45,24 @@ public class PlayerController : MonoBehaviour
     // process our inputs from the player in the update functions
     void ProcessInputs()
     {
-        // move our input vector using the WASD keys
-        inputVector += new Vector3(Input.GetAxis("Horizontal") * targetKeyMovementSpeed, 0, Input.GetAxis("Vertical") * targetKeyMovementSpeed);
+        // reset input vector
+        inputVector = Vector3.zero;
+
+        // move forward
+        mimicTransform.localPosition += mimicTransform.forward * Input.GetAxis("Vertical") * targetKeyMovementSpeed;
+        mimicTransform.localPosition += mimicTransform.right * Input.GetAxis("Horizontal") * targetKeyMovementSpeed;
+
         // calculate the mouse movement distance and move our input vector by clicking and dragging with the middle mouse button
         if (Input.GetMouseButton(2))
-            inputVector += (new Vector3(Input.mousePosition.x, 0, Input.mousePosition.y) - previousFrameMousePos) * targetMouseMovementSpeed;
+        {
+            Vector3 distance = Input.mousePosition - previousFrameMousePos;
+            mimicTransform.localPosition += mimicTransform.forward * distance.y * targetMouseMovementSpeed;
+            mimicTransform.localPosition += mimicTransform.right * distance.x * targetMouseMovementSpeed;
+        }
+
         // set our new mouse position
-        previousFrameMousePos = new Vector3(Input.mousePosition.x, 0, Input.mousePosition.y);
-        // set final input to 0
-        Vector3 finalInput = Vector3.zero;
-        // if we have an input, calculate finalInput
-        if (inputVector.x > 0 || inputVector.z > 0)
-            finalInput = new Vector3(inputVector.x * mimicTransform.forward.x, inputVector.y * mimicTransform.forward.y, inputVector.z * mimicTransform.forward.z);
-
-        // set the position of our targetTransform locally, after it has been calculated and rotated
-        mimicTransform.localPosition = finalInput;
-
+        previousFrameMousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
+        
         // calculate our rotation, when we press R add 90 degrees of rotation to our Y axis
         if (Input.GetKeyDown(KeyCode.R))
             mimicTransform.localRotation = Quaternion.Euler(mimicTransform.localEulerAngles.x, mimicTransform.localEulerAngles.y + 90, mimicTransform.localEulerAngles.z);
