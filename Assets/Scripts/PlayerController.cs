@@ -56,8 +56,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(2))
         {
             Vector3 distance = Input.mousePosition - previousFrameMousePos;
-            mimicTransform.localPosition += mimicTransform.forward * distance.y * targetMouseMovementSpeed;
-            mimicTransform.localPosition += mimicTransform.right * distance.x * targetMouseMovementSpeed;
+            mimicTransform.localPosition += mimicTransform.forward * distance.y * targetMouseMovementSpeed * 2;
+            mimicTransform.localPosition += mimicTransform.right * distance.x * targetMouseMovementSpeed * 1.5f;
         }
 
         // set our new mouse position
