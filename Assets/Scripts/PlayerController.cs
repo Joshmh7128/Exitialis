@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         // lerp our camera container to the positions and rotation of our target transform
         cameraContainer.position = Vector3.Lerp(cameraContainer.position, targetTransform.position, movementLerpSpeed * Time.fixedDeltaTime);
-        cameraContainer.rotation = Quaternion.Lerp(cameraContainer.rotation, targetTransform.rotation, rotationSlerpSpeed * Time.fixedDeltaTime);
+        cameraContainer.rotation = Quaternion.Slerp(cameraContainer.rotation, targetTransform.rotation, rotationSlerpSpeed * Time.fixedDeltaTime);
     }
 
     // process our inputs from the player in the update functions
