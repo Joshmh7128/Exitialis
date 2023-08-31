@@ -45,8 +45,10 @@ public class PlayerController : MonoBehaviour
             inputVector += (new Vector3(Input.mousePosition.x, 0, Input.mousePosition.y) - previousFrameMousePos) * targetMouseMovementSpeed;
         // set our new mouse position
         previousFrameMousePos = new Vector3(Input.mousePosition.x, 0, Input.mousePosition.y);
-
         // set the position of our targetTransform
         targetTransform.position = inputVector;
+        // calculate our rotation, when we press R add 45 degrees of rotation to our Y axis
+        if (Input.GetKeyDown(KeyCode.R))
+            targetTransform.eulerAngles = new Vector3(targetTransform.eulerAngles.x, targetTransform.eulerAngles.y + 45, targetTransform.eulerAngles.z);
     }
 }
