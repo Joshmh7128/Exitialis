@@ -58,7 +58,28 @@
     <Analyzer Include="F:\Unity\Editors\2022.3.8f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\PlayerController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Particles\DustParticlesForwardPass.hlsl" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\TransparentMultiply.shader" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\DepthOnly.shader" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Primitives.hlsl" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\TransparentDepthWrite.shader" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Empty.shader" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\VolumetricLightURP.shader" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Particles\DustParticlesInput.hlsl" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Blur.hlsl" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Lighting.hlsl" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\CopyDepthIntoCubemap.shader" />
+    <None Include="Assets\VolumetricLights\README.txt" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\ShadowOcclusion.hlsl" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Options.hlsl" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\CommonsURP.hlsl" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Invisible.shader" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Blur.shader" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Particles\DustParticles.shader" />
+    <None Include="Assets\VolumetricLights\Resources\Shaders\Raymarch.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -312,6 +333,9 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.9.0\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>F:\Unity\Editors\2022.3.8f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
@@ -685,9 +709,6 @@
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Runtime">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Burst.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
     </Reference>
@@ -780,6 +801,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{D33D63CF-C429-CDF9-DED3-EC2B0D0585BA}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Universal.Runtime.csproj">
+      <Project>{29564C5C-F78C-B334-41CA-E64DE2CD6689}</Project>
+      <Name>Unity.RenderPipelines.Universal.Runtime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

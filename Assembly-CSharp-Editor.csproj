@@ -839,6 +839,10 @@
       <Project>{D33D63CF-C429-CDF9-DED3-EC2B0D0585BA}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp.csproj">
+      <Project>{4AD8E0C6-0355-632D-1AB5-3D513E0EBCE6}</Project>
+      <Name>Assembly-CSharp</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.RenderPipelines.Universal.Runtime.csproj">
       <Project>{29564C5C-F78C-B334-41CA-E64DE2CD6689}</Project>
       <Name>Unity.RenderPipelines.Universal.Runtime</Name>
