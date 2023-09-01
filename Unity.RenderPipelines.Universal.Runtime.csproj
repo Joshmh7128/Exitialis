@@ -165,8 +165,8 @@
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@14.0.8\Runtime\Tiling\TileRangeExpansionJob.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@14.0.8\Runtime\TemporalAA.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@14.0.8\Runtime\2D\CinemachineUniversalPixelPerfect.cs" />
-    <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@14.0.8\Runtime\Data\UniversalRenderPipelineAsset.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@14.0.8\Runtime\XR\XRPassUniversal.cs" />
+    <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@14.0.8\Runtime\Data\UniversalRenderPipelineAsset.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@14.0.8\Runtime\Overrides\PaniniProjection.cs" />
     <Compile Include="Assets\VolumetricLights\Scripts\VolumetricLightsRenderFeature.cs" />
     <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@14.0.8\Runtime\Data\PostProcessData.cs" />

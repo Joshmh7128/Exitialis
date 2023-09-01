@@ -655,15 +655,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlanetSize: 100
   waveHeightContributor: 0.1
-  waveDistributionPercentage: 100
+  waveDistributionPercentage: 4
   tilePrefabs:
+  - {fileID: 2906718210945587889, guid: 5d267b14d6861634eb05d0010a7d3145, type: 3}
   - {fileID: 2906718210945587889, guid: 2eb41d51b2bcdcd40b192120ecdc8475, type: 3}
   - {fileID: 2906718210945587889, guid: 820746941f13a3646b0ccb70c18f3eed, type: 3}
   - {fileID: 2906718210945587889, guid: 41e883937aedd524bafcee26bf49bcb7, type: 3}
   - {fileID: 2906718210945587889, guid: a424497e23f2c244fa300c2d7d600cc5, type: 3}
   - {fileID: 2906718210945587889, guid: 117acf78984c6ca479521642c2733bb6, type: 3}
-  - {fileID: 2906718210945587889, guid: 5d267b14d6861634eb05d0010a7d3145, type: 3}
-  tileWeights: 640000006400000064000000640000006400000000000000
+  tileWeights: 000000006400000064000000640000006400000064000000
 --- !u!1 &975206221
 GameObject:
   m_ObjectHideFlags: 0
