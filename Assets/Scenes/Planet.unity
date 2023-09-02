@@ -653,7 +653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b94f521d68b7042970fa05204fee06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlanetSize: 100
+  PlanetSize: 50
   waveHeightContributor: 0
   waveDistributionPercentage: 10
   heuristicCheck: 10
@@ -668,7 +668,7 @@ MonoBehaviour:
   - {fileID: 2906718210945587889, guid: 1bddcd76d029f06429028826bf8ef0a2, type: 3}
   - {fileID: 2906718210945587889, guid: 69a3e7cf40b9d88448e6c1980deab452, type: 3}
   - {fileID: 2906718210945587889, guid: b266948c5d31c3247aa77a35ad29d4f9, type: 3}
-  tileWeights: 00000000000000006400000014000000640000000000000000000000140000006400000000000000
+  tileWeights: 0000000064000000900100006400000064000000e8030000e8030000640000006400000064000000
 --- !u!1 &975206221
 GameObject:
   m_ObjectHideFlags: 0
