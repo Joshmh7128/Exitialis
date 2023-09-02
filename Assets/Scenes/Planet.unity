@@ -654,10 +654,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b94f521d68b7042970fa05204fee06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlanetSize: 20
+  PlanetSize: 30
   waveHeightContributor: 0
-  waveDistributionPercentage: 10
-  heuristicCheck: 10
+  waveDistributionPercentage: 40
+  heuristicCheck: 5
   canGen: 1
   tilePrefabs:
   - {fileID: 2906718210945587889, guid: 5d267b14d6861634eb05d0010a7d3145, type: 3}
@@ -2381,6 +2381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ad344ea45b3c44a8eed02519155a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileName: 
 --- !u!4 &4816309942652845143
 Transform:
   m_ObjectHideFlags: 0
@@ -2431,6 +2432,8 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0, z: 0}
   lerpSpeed: 40
   highlightedTile: {fileID: 0}
+  tileInfoPopupPrefab: {fileID: 5457878532055145206, guid: ebd5315c81f92804da6297c050782f2d,
+    type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

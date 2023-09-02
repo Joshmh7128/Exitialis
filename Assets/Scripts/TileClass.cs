@@ -5,9 +5,13 @@ using UnityEngine;
 public class TileClass : MonoBehaviour
 {
     /// class holds all the info for tiles
+
+    [Header("Tile Information")]
+    public string tileName; // our tile's name, ex: Grass Tile, Desert Tile
+
+
     private void OnMouseEnter()
     {
-        Debug.Log(gameObject.name + " is being hovered over");
         // set this to our active tile
         PlayerMouse.instance.highlightedTile = this;
     }

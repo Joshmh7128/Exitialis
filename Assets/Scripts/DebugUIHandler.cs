@@ -19,6 +19,6 @@ public class DebugUIHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F12))
             debugUIParent.SetActive(!debugUIParent.activeInHierarchy);
         // display our fixed update speed
-        fixedUpdateDisplay.text = (Time.fixedDeltaTime * 120f).ToString();
+        fixedUpdateDisplay.text = (Time.deltaTime / 60).ToString();
     }
 }

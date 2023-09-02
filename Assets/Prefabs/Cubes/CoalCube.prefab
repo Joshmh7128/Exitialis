@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ad344ea45b3c44a8eed02519155a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileName: Coal
 --- !u!65 &7258855582076664212
 BoxCollider:
   m_ObjectHideFlags: 0

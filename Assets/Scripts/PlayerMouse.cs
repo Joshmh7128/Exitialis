@@ -34,4 +34,43 @@ public class PlayerMouse : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed * Time.fixedDeltaTime);
     }
 
+    private void Update()
+    {
+        ProcessClicks();
+    }
+
+    void ProcessClicks()
+    {
+        // process left clicks
+        if (Input.GetMouseButtonDown(0))
+        {
+            OnLeftClick();
+        }
+    }
+
+    // what happens when we click?
+    void OnLeftClick()
+    {
+        // if we click and have a highlighted tile
+        if (highlightedTile)
+        {
+            CreateTileInfoPopup(highlightedTile);
+        }
+    }
+
+    // create a tile info popup for the player to read
+    [SerializeField] GameObject tileInfoPopupPrefab; // the prefab we are using to build the popups
+    void CreateTileInfoPopup(TileClass tile)
+    {
+        // clear our UI elements
+        PlayerUIManager.instance.ClearDynamicUI();
+
+        // instantiate the prefab at the selector's point
+        TileInfoPopup tip = Instantiate(tileInfoPopupPrefab, transform.position, Quaternion.identity, tile.transform).GetComponent<TileInfoPopup>();
+        // add this new UI element to the active dynamic UI elements on the manager
+        PlayerUIManager.instance.ActiveDynamicUIElements.Add(tip.gameObject);
+        // send the tile info
+        tip.selectedTile = tile;
+    }
+
 }
