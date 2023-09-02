@@ -26,7 +26,7 @@ public class ScanRequestClass : MonoBehaviour
         if (isMouseOver && Input.GetMouseButtonDown(0))
             toggle.isOn = !toggle.isOn;
     }
-
+    
     // for the onchange event of our toggle
     public void SetPriorityScan()
     {

@@ -4525,7 +4525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlanetSize: 10
   waveHeightContributor: 0
-  waveDistributionPercentage: 5
+  waveDistributionPercentage: 50
   heuristicCheck: 5
   canGen: 1
   tilePrefabs:
@@ -6894,6 +6894,7 @@ MonoBehaviour:
   tileName: 
   tileScanned: 0
   priorityScan: 0
+  tileRenderer: {fileID: 0}
 --- !u!4 &4816309942652845143
 Transform:
   m_ObjectHideFlags: 0

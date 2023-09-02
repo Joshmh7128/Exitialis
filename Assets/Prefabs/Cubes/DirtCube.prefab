@@ -49,6 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Dirt
+  tileScanned: 0
+  priorityScan: 0
+  tileRenderer: {fileID: 1736560838155063077}
 --- !u!65 &7169472594449008017
 BoxCollider:
   m_ObjectHideFlags: 0

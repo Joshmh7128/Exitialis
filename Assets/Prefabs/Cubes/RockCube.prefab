@@ -49,6 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Rock
+  tileScanned: 0
+  priorityScan: 0
+  tileRenderer: {fileID: 1736560838155063077}
 --- !u!65 &3275539220813242617
 BoxCollider:
   m_ObjectHideFlags: 0

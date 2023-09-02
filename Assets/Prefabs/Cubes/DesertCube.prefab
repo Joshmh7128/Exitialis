@@ -49,6 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Desert
+  tileScanned: 0
+  priorityScan: 0
+  tileRenderer: {fileID: 1736560838155063077}
 --- !u!65 &2800399221874141702
 BoxCollider:
   m_ObjectHideFlags: 0

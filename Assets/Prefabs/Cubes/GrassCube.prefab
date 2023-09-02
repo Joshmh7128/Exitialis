@@ -49,6 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Grass
+  tileScanned: 0
+  priorityScan: 0
+  tileRenderer: {fileID: 1736560838155063077}
 --- !u!65 &2425258888737943539
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -115,14 +115,12 @@ public class Drone : MonoBehaviour
             {
                 closestPdistance = Vector3.Distance(tile.transform.position, transform.position);
                 closestPtile = tile;
+                closestTile = closestPtile;
             }
         }
 
         // move to the tile
-        if (closestPtile != PlanetGenerator.instance.PlanetTiles[0, 0])
-            navMeshAgent.SetDestination(new Vector3(closestPtile.transform.position.x, transform.position.y, closestPtile.transform.position.z));
-        else
-            navMeshAgent.SetDestination(new Vector3(closestTile.transform.position.x, transform.position.y, closestTile.transform.position.z));
+        navMeshAgent.SetDestination(new Vector3(closestTile.transform.position.x, transform.position.y, closestTile.transform.position.z));
         // wait until we are at the task location
         yield return new WaitUntil(AtTaskLocation);
         // scan the tile
@@ -138,6 +136,7 @@ public class Drone : MonoBehaviour
         worldSpaceUIParent.SetActive(false);
         // reveal its information
         closestTile.tileScanned = true;
+        closestTile.OnScan();
         // move on to the next behaviour
         NextState();
         // start the next state

@@ -50,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileName: Coal
   tileScanned: 0
+  priorityScan: 0
+  tileRenderer: {fileID: 1736560838155063077}
 --- !u!65 &7258855582076664212
 BoxCollider:
   m_ObjectHideFlags: 0
