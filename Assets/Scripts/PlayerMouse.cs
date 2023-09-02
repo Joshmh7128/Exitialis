@@ -13,6 +13,19 @@ public class PlayerMouse : MonoBehaviour
     [SerializeField] float lerpSpeed; // how fast we lerp to our target positions
     public TileClass highlightedTile; // which tile have we highlighted?
 
+    private void Start()
+    {
+        // set the tile to the first tile in the set so that we don't get errors on startup
+        highlightedTile = GrabTileInfo(1, 1);
+    }
+
+    // use this to grab info from a tile
+    TileClass GrabTileInfo(int x, int y)
+    {
+        // get the tile
+        return PlanetGenerator.instance.PlanetTiles[x, y];
+    }
+
     private void FixedUpdate()
     {
         // update our target positions

@@ -21,6 +21,13 @@ public class PlayerController : MonoBehaviour
     // our constraints
     [SerializeField] float zPosMin, zPosMax; // our minimum and maximum for our cameraZPosContainer
 
+    // setup the things we need for the player controller to run well
+    private void Start()
+    {
+        // set our target application framerate
+        Application.targetFrameRate = 120;
+    }
+
     // our fixed update, runs 120 times per second
     private void FixedUpdate()
     {

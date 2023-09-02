@@ -12,7 +12,8 @@ public class PlanetGenerator : MonoBehaviour
     [SerializeField] int heuristicCheck; // how many times do we run the generation check?
     [SerializeField] bool canGen; // can we gen?
 
-    int[,] GeneratedGrid; // our finally generated planet grid
+    int[,] GeneratedGrid; // our final generated planet grid in integer values
+    public TileClass[,] PlanetTiles; // our final generated planet grid of actual tiles
 
     // our tile types
     public enum TileTypes
@@ -21,6 +22,10 @@ public class PlanetGenerator : MonoBehaviour
     // the list of tile prefabs that we are going to use to instantiate our planet
     [SerializeField] List<GameObject> tilePrefabs = new List<GameObject>();
     [SerializeField] List<int> tileWeights = new List<int>();
+
+    // our instance
+    public static PlanetGenerator instance;
+    private void Awake() => instance = this; // set our instance
 
     // on start, generate our planet
     private void Start()
@@ -32,6 +37,9 @@ public class PlanetGenerator : MonoBehaviour
     // our generation function
     private void GeneratePlanet()
     {
+        // make sure our planet grid is ready to go
+        PlanetTiles = new TileClass[PlanetSize, PlanetSize];
+
         // let's create some grid data to reference what we are spawning in
         int[,] LookupGrid = new int[(int)PlanetSize, (int)PlanetSize];
         // the array representing our source tiles that are placed by the generator
@@ -261,24 +269,21 @@ public class PlanetGenerator : MonoBehaviour
     void FrametimeTileSpawning()
     {
         SpawnTile(x, y);
-
         x++; 
         if (x >= PlanetSize)
         {
             x = 0;
             y++;
         }
-
     }
 
     // spawn in tiles based off of information
     void SpawnTile(int x, int z)
     {
-        // get our y position as a combination of our x and z
-        // float yPos = (Mathf.Sin(x) + Mathf.Cos(z)) * waveHeightContributor;
-
         // place a tile according to the lookup grid's information
-        Instantiate(tilePrefabs[GeneratedGrid[x, z]], new Vector3(transform.position.x + x, 0, transform.position.z + z), Quaternion.Euler(0, Random.Range(0, 5) * 90, 0), transform);
+        TileClass tile = Instantiate(tilePrefabs[GeneratedGrid[x, z]], new Vector3(transform.position.x + x, 0, transform.position.z + z), Quaternion.Euler(0, Random.Range(0, 5) * 90, 0), transform).GetComponent<TileClass>();
+        // add that to our final reference grid of tiles
+        PlanetTiles[x, z] = tile;
     }
 
 }
