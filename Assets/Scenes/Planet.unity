@@ -363,6 +363,7 @@ Transform:
   m_Children:
   - {fileID: 975206222}
   - {fileID: 4816309942652845143}
+  - {fileID: 2145545569}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &609011942
@@ -654,7 +655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b94f521d68b7042970fa05204fee06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlanetSize: 30
+  PlanetSize: 10
   waveHeightContributor: 0
   waveDistributionPercentage: 40
   heuristicCheck: 5
@@ -2369,6 +2370,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugUIParent: {fileID: 1461723520}
   fixedUpdateDisplay: {fileID: 1579574322}
+--- !u!1 &2145545568
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2145545569}
+  - component: {fileID: 2145545570}
+  m_Layer: 0
+  m_Name: PlayerUIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2145545569
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145545568}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 453563702}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2145545570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145545568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b06452ce9a3f0b4aa8ff7262fb60c7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveDynamicUIElements: []
 --- !u!114 &2196128123078506541
 MonoBehaviour:
   m_ObjectHideFlags: 0

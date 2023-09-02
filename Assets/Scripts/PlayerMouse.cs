@@ -66,7 +66,7 @@ public class PlayerMouse : MonoBehaviour
         PlayerUIManager.instance.ClearDynamicUI();
 
         // instantiate the prefab at the selector's point
-        TileInfoPopup tip = Instantiate(tileInfoPopupPrefab, transform.position, Quaternion.identity, tile.transform).GetComponent<TileInfoPopup>();
+        TileInfoPopup tip = Instantiate(tileInfoPopupPrefab, tile.transform.position, Quaternion.identity, tile.transform).GetComponent<TileInfoPopup>();
         // add this new UI element to the active dynamic UI elements on the manager
         PlayerUIManager.instance.ActiveDynamicUIElements.Add(tip.gameObject);
         // send the tile info

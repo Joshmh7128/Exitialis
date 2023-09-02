@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -17,15 +18,24 @@ public class PlayerUIManager : MonoBehaviour
     // close all UI panels on the screen
     public void ClearDynamicUI()
     {
-        foreach(GameObject go in ActiveDynamicUIElements)
+        // rebuild the list
+        ActiveDynamicUIElements.RemoveAll(item => item == null);
+
+        // manage our dynamic ui
+        foreach (GameObject go in ActiveDynamicUIElements)
         {
             // check what kind of UI element this object is
 
             // if this is a tile info popup, destroy the object
             if (go.GetComponent<TileInfoPopup>())
             {
+                if (go != null)
                 Destroy(go);
             }
         }
+
+        // rebuild the list
+        ActiveDynamicUIElements.RemoveAll(item => item == null);
+
     }
 }
