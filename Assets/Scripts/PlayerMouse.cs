@@ -30,7 +30,10 @@ public class PlayerMouse : MonoBehaviour
     private void FixedUpdate()
     {
         // update our target positions
-        targetPosition = highlightedTile.transform.position;
+        if (highlightedTile && !highlightedDrone)
+            targetPosition = highlightedTile.transform.position;
+        if (highlightedDrone)
+            targetPosition = highlightedDrone.transform.position + highlightedDrone.positionOffet;
         // lerp to our target position
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed * Time.fixedDeltaTime);
     }
@@ -53,9 +56,15 @@ public class PlayerMouse : MonoBehaviour
     void OnLeftClick()
     {
         // if we click and have a highlighted tile
-        if (highlightedTile)
+        if (highlightedTile && !highlightedDrone)
         {
             CreateTileInfoPopup(highlightedTile);
+        }
+
+        // if we have clicked on a highlighted drone
+        if (highlightedDrone)
+        {
+            CreateDroneInfoPopup(highlightedDrone);
         }
     }
 
@@ -72,6 +81,21 @@ public class PlayerMouse : MonoBehaviour
         PlayerUIManager.instance.ActiveDynamicUIElements.Add(tip.gameObject);
         // send the tile info
         tip.selectedTile = tile;
+    }
+
+    // create a drone info popup for the player to read
+    [SerializeField] GameObject droneInfoPopupPrefab; // the prefab we are using to build the popups
+    void CreateDroneInfoPopup(Drone drone)
+    {
+        // clear our UI elements
+        PlayerUIManager.instance.ClearDynamicUI();
+
+        // instantiate the prefab at the selector's point
+        DroneInfoPopup dip = Instantiate(droneInfoPopupPrefab, drone.transform.position, Quaternion.identity, drone.transform).GetComponent<DroneInfoPopup>();
+        // add this new UI element to the active dynamic UI elements on the manager
+        PlayerUIManager.instance.ActiveDynamicUIElements.Add(dip.gameObject);
+        // send the tile info
+        dip.selectedDrone = drone;
     }
 
 }

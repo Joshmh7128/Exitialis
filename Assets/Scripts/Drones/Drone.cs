@@ -22,6 +22,9 @@ public class Drone : MonoBehaviour
     public DroneStates currentState; // our current drone state
     int currentPossibleState; // our current possible state
 
+    // our position offset for UI reading
+    public Vector3 positionOffet;
+
     // nagivation
     NavMeshAgent navMeshAgent; // our navigation mesh agent
 
@@ -39,6 +42,17 @@ public class Drone : MonoBehaviour
     void LateStart()
     {
         SetBehaviour();
+    }
+
+    // check whether or not we are highlighted by the player's mouse
+    private void OnMouseEnter()
+    {
+        PlayerMouse.instance.highlightedDrone = this;
+    }
+
+    private void OnMouseExit()
+    {
+        PlayerMouse.instance.highlightedDrone = null;
     }
 
     // set our behaviour based on our current state

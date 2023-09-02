@@ -32,6 +32,13 @@ public class PlayerUIManager : MonoBehaviour
                 if (go != null)
                 Destroy(go);
             }
+
+            // if this is a drone info popup, destroy the object
+            if (go.GetComponent<DroneInfoPopup>())
+            {
+                if (go != null)
+                    Destroy(go);
+            }
         }
 
         // rebuild the list
