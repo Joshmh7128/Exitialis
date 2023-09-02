@@ -8,7 +8,7 @@ public class TileClass : MonoBehaviour
 
     [Header("Tile Information")]
     public string tileName; // our tile's name, ex: Grass Tile, Desert Tile
-    public bool tileScanned; // has this tile been scanned?
+    public bool tileScanned, priorityScan; // has this tile been scanned?
 
     private void OnMouseEnter()
     {

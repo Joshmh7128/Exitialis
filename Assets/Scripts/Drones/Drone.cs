@@ -106,8 +106,23 @@ public class Drone : MonoBehaviour
             }
         }
 
+
+        float closestPdistance = PlanetGenerator.instance.PlanetSize; TileClass closestPtile = PlanetGenerator.instance.PlanetTiles[0, 0];
+        // are there any priority tiles?
+        foreach (TileClass tile in PlanetGenerator.instance.PlanetTiles)
+        {
+            if (Vector3.Distance(tile.transform.position, transform.position) < closestPdistance && tile.tileScanned == false && tile.priorityScan)
+            {
+                closestPdistance = Vector3.Distance(tile.transform.position, transform.position);
+                closestPtile = tile;
+            }
+        }
+
         // move to the tile
-        navMeshAgent.SetDestination(new Vector3(closestTile.transform.position.x, transform.position.y, closestTile.transform.position.z));
+        if (closestPtile != PlanetGenerator.instance.PlanetTiles[0, 0])
+            navMeshAgent.SetDestination(new Vector3(closestPtile.transform.position.x, transform.position.y, closestPtile.transform.position.z));
+        else
+            navMeshAgent.SetDestination(new Vector3(closestTile.transform.position.x, transform.position.y, closestTile.transform.position.z));
         // wait until we are at the task location
         yield return new WaitUntil(AtTaskLocation);
         // scan the tile
@@ -149,6 +164,9 @@ public class Drone : MonoBehaviour
     {
         if (progressSlider.value != progressSlider.maxValue)
         {
+            // make the bar face the camera
+            progressSlider.transform.LookAtCamera();
+            // update the value
             progressSlider.value += Time.deltaTime * sliderProgressSpeed;
             // start again, run ever second
             yield return new WaitForSecondsRealtime(1f);

@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Coal
+  tileScanned: 0
 --- !u!65 &7258855582076664212
 BoxCollider:
   m_ObjectHideFlags: 0
