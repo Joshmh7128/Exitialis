@@ -17,6 +17,8 @@ public class TileInfoPopup : MonoBehaviour
         canvasParent.LookAtCamera();
         // at the very start of us, get the information of the selected tile
         GetTileInfo();
+        // update this tile's information panel every second
+        StartCoroutine(UpdateTileInfo());
     }
 
     // get our tile info
@@ -33,6 +35,14 @@ public class TileInfoPopup : MonoBehaviour
             // set our display name
             tileNameDisplay.text = "Unscanned";
         }
+    }
+
+    // update every second
+    IEnumerator UpdateTileInfo()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        GetTileInfo();
+        StartCoroutine(UpdateTileInfo());
     }
 
 }

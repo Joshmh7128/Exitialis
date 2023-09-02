@@ -33,6 +33,11 @@ public class Drone : MonoBehaviour
     private void Start()
     {
         navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
+        Invoke("LateStart", 1f);
+    }
+
+    void LateStart()
+    {
         SetBehaviour();
     }
 
@@ -53,6 +58,7 @@ public class Drone : MonoBehaviour
             case DroneStates.repair:
                 break;
             case DroneStates.explore:
+                Debug.Log("Exploring...");
                 StartCoroutine(ExploreBehaviour());
                 break;
         }
@@ -87,7 +93,8 @@ public class Drone : MonoBehaviour
 
         // move to the tile
         navMeshAgent.SetDestination(new Vector3(closestTile.transform.position.x, transform.position.y, closestTile.transform.position.z));
-
+        // wait until we are at the task location
+        yield return new WaitUntil(AtTaskLocation);
         // scan the tile
         // set our UI to active
         worldSpaceUIParent.SetActive(true);
@@ -103,13 +110,23 @@ public class Drone : MonoBehaviour
         closestTile.tileScanned = true;
         // move on to the next behaviour
         NextState();
+        // start the next state
+        SetBehaviour();
         // end the coroutine
         yield break;
     }
 
+    // reports on the progress the drone has made on its task
     bool TaskProgressComplete()
     {
         return progressSlider.value == progressSlider.maxValue;
+    }
+
+    // returns whether this drone has arrived at its task location
+    bool AtTaskLocation()
+    {
+        // only check on the x and z axes
+        return Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(navMeshAgent.destination.x, 0, navMeshAgent.destination.z)) < 0.1f;
     }
 
     // process our slider visual
