@@ -249,7 +249,6 @@ GameObject:
   - component: {fileID: 239118822}
   - component: {fileID: 239118821}
   - component: {fileID: 239118820}
-  - component: {fileID: 239118819}
   - component: {fileID: 239118823}
   m_Layer: 0
   m_Name: BackgroundPlane
@@ -258,28 +257,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &239118819
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 239118818}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1968104669}
 --- !u!23 &239118820
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -329,7 +306,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 239118818}
-  m_Mesh: {fileID: 1968104669}
+  m_Mesh: {fileID: 2041983656}
 --- !u!4 &239118822
 Transform:
   m_ObjectHideFlags: 0
@@ -339,7 +316,7 @@ Transform:
   m_GameObject: {fileID: 239118818}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -14.5, z: 0}
   m_LocalScale: {x: 10000, y: 1, z: 10000}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3395,7 +3372,7 @@ MonoBehaviour:
     m_AreaError: 15
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
-  m_Mesh: {fileID: 1968104669}
+  m_Mesh: {fileID: 2041983656}
   m_VersionIndex: 49
   m_IsSelectable: 1
   m_SelectedFaces: 
@@ -3426,7 +3403,7 @@ Transform:
   m_GameObject: {fileID: 299611407}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.857, z: 0}
+  m_LocalPosition: {x: 0, y: -0.8333, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4794,7 +4771,7 @@ Transform:
   m_GameObject: {fileID: 1092224021}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 1.83333, z: 5}
+  m_LocalPosition: {x: 5, y: 2, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4817,7 +4794,7 @@ MonoBehaviour:
   droneName: Starter Drone
   possibleStates: 04000000
   currentState: 4
-  positionOffet: {x: 0, y: -1, z: 0}
+  positionOffset: {x: 0, y: -1.5, z: 0}
   worldSpaceUIParent: {fileID: 1691752820}
   progressSlider: {fileID: 725091544}
 --- !u!65 &1092224029
@@ -6691,13 +6668,13 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1809990021}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!43 &1968104669
+--- !u!43 &2041983656
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-304954
+  m_Name: pb_Mesh-304954(Clone)
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2

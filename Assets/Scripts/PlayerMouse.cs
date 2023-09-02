@@ -9,7 +9,7 @@ public class PlayerMouse : MonoBehaviour
     private void Awake() => instance = this;
     /// this script manages our player's mouse, the current tile we are hovering, and the current tile we have selected
     [SerializeField] GameObject mouseSelector; // the selector that shows which tile we are hovering over
-    [SerializeField] Vector3 targetPosition; // the position we lerp to
+    [SerializeField] Vector3 targetPosition, targetScale; // the position we lerp to
     [SerializeField] float lerpSpeed; // how fast we lerp to our target positions
     public TileClass highlightedTile; // which tile have we highlighted?
     public Drone highlightedDrone; // is a drone highlighted?
@@ -31,11 +31,19 @@ public class PlayerMouse : MonoBehaviour
     {
         // update our target positions
         if (highlightedTile && !highlightedDrone)
+        {
             targetPosition = highlightedTile.transform.position;
+            targetScale = Vector3.one;
+        }
         if (highlightedDrone)
-            targetPosition = highlightedDrone.transform.position + highlightedDrone.positionOffet;
+        {
+            targetPosition = highlightedDrone.transform.position + highlightedDrone.positionOffset;
+            targetScale = new Vector3(0.5f, 1, 0.5f);
+        }
         // lerp to our target position
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed * Time.fixedDeltaTime);
+        // lerp to our target scale
+        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, lerpSpeed * Time.fixedDeltaTime);
     }
 
     private void Update()
@@ -91,7 +99,7 @@ public class PlayerMouse : MonoBehaviour
         PlayerUIManager.instance.ClearDynamicUI();
 
         // instantiate the prefab at the selector's point
-        DroneInfoPopup dip = Instantiate(droneInfoPopupPrefab, drone.transform.position, Quaternion.identity, drone.transform).GetComponent<DroneInfoPopup>();
+        DroneInfoPopup dip = Instantiate(droneInfoPopupPrefab, drone.transform.position + drone.positionOffset, Quaternion.identity, drone.transform).GetComponent<DroneInfoPopup>();
         // add this new UI element to the active dynamic UI elements on the manager
         PlayerUIManager.instance.ActiveDynamicUIElements.Add(dip.gameObject);
         // send the tile info

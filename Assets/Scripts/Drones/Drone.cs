@@ -9,8 +9,9 @@ public class Drone : MonoBehaviour
     /// this is the master script we are using to build all of our drones
     /// all drone functions run off of this one script, different drones will simply have different capabilities defined by this
 
+    // our drone information
     public string droneName; // the name of our drone, ex: Delivery Drone, Construction Drone
-
+    public string currentBehaviourString; // our current behaviour
     // the states our drone can be in
     public enum DroneStates
     {
@@ -23,7 +24,7 @@ public class Drone : MonoBehaviour
     int currentPossibleState; // our current possible state
 
     // our position offset for UI reading
-    public Vector3 positionOffet;
+    public Vector3 positionOffset;
 
     // nagivation
     NavMeshAgent navMeshAgent; // our navigation mesh agent
@@ -72,7 +73,7 @@ public class Drone : MonoBehaviour
             case DroneStates.repair:
                 break;
             case DroneStates.explore:
-                Debug.Log("Exploring...");
+                currentBehaviourString = "Exploring";
                 StartCoroutine(ExploreBehaviour());
                 break;
         }
