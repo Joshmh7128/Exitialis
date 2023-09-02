@@ -12,6 +12,7 @@ public class PlayerMouse : MonoBehaviour
     [SerializeField] Vector3 targetPosition; // the position we lerp to
     [SerializeField] float lerpSpeed; // how fast we lerp to our target positions
     public TileClass highlightedTile; // which tile have we highlighted?
+    public Drone highlightedDrone; // is a drone highlighted?
 
     private void Start()
     {

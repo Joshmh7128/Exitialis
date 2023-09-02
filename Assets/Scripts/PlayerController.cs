@@ -26,6 +26,10 @@ public class PlayerController : MonoBehaviour
     {
         // set our target application framerate
         Application.targetFrameRate = 120;
+
+        // set the mimic transform to the center of the map
+        mimicTransform.position = new Vector3(PlanetGenerator.instance.PlanetSize / 2, 0, PlanetGenerator.instance.PlanetSize / 2);
+
     }
 
     // our fixed update, runs 120 times per second
@@ -82,5 +86,9 @@ public class PlayerController : MonoBehaviour
             cameraZPosContainer.localPosition = new Vector3(cameraZPosContainer.localPosition.x, cameraZPosContainer.localPosition.y, zPosMin);
         if (cameraZPosContainer.localPosition.z >= zPosMax)
             cameraZPosContainer.localPosition = new Vector3(cameraZPosContainer.localPosition.x, cameraZPosContainer.localPosition.y, zPosMax);
+
+        // clear the UI if we hit esc
+        if (Input.GetKeyDown(KeyCode.Escape))
+            PlayerUIManager.instance.ClearDynamicUI();
     }
 }

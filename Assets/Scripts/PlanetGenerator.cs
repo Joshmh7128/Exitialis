@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlanetGenerator : MonoBehaviour
 {
     // this script generates a whole planet for the game
 
-    [SerializeField] int PlanetSize; // the size of our planet when generated
+    public int PlanetSize; // the size of our planet when generated
     [SerializeField] float waveHeightContributor; // wave height contributor factor for our waves
     [SerializeField] float waveDistributionPercentage; // what is the chance that we change our wave?
     [SerializeField] int heuristicCheck; // how many times do we run the generation check?
@@ -81,6 +83,9 @@ public class PlanetGenerator : MonoBehaviour
                 y++;
             }
         }
+
+        // once the planet is ready, bake our navigation map
+        PlanetTiles[0, 0].gameObject.GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 
     void BreadthCheck(int[,] LookupGrid, int[,] SourceTiles)
