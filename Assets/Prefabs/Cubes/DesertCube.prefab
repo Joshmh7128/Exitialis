@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Desert
+  tileFlavorText: An arid, dry region, made of solid ground.
   tileScanned: 0
   priorityScan: 0
   tileRenderer: {fileID: 1736560838155063077}

@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Dirt
+  tileFlavorText: Soft, fertile ground, perfect for nurturing lifeforms.
   tileScanned: 0
   priorityScan: 0
   tileRenderer: {fileID: 1736560838155063077}

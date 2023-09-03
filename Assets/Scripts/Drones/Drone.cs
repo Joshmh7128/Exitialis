@@ -12,6 +12,10 @@ public class Drone : MonoBehaviour
     // our drone information
     public string droneName; // the name of our drone, ex: Delivery Drone, Construction Drone
     public string currentBehaviourString; // our current behaviour
+
+    // how much can our drone hold?
+    public float droneStorage;
+
     // the states our drone can be in
     public enum DroneStates
     {

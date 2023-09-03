@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Coal
+  tileFlavorText: Packed carbon typically used as a primitive fuel.
   tileScanned: 0
   priorityScan: 0
   tileRenderer: {fileID: 1736560838155063077}

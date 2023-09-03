@@ -8,7 +8,7 @@ public class TileInfoPopup : MonoBehaviour
     /// script grabs and populates an info popup panel when a tile is selected
     public TileClass selectedTile; // the tile we are currently reading
     [SerializeField] Transform canvasParent; // our canvas parent
-    [SerializeField] Text tileNameDisplay; // displays the tile's name
+    [SerializeField] Text tileNameDisplay, tileFlavorDisplay; // displays the tile's name
     [SerializeField] GameObject scanInfoRequestPrefab; // our request to spawn on an object if it has not been scanned
     [SerializeField] Transform requestGroup; // the group that handles all of our requests
 
@@ -24,6 +24,13 @@ public class TileInfoPopup : MonoBehaviour
         // update this tile's information panel every second
         StartCoroutine(UpdateTileInfo());
     }
+
+    // while the mouse is over, set the highlighted tile to our selected tile so that we can't lose focus easily
+    private void OnMouseEnter()
+    {
+        PlayerMouse.instance.highlightedTile = selectedTile;
+    }
+
 
     // setup our requests
     void SetupRequests()
@@ -43,8 +50,16 @@ public class TileInfoPopup : MonoBehaviour
         // has this tile been scanned by a drone?
         if (selectedTile.tileScanned)
         {
+            // kill all our requests
+            foreach(Transform t in requestGroup)
+            {
+                Destroy(t.gameObject);
+            }
+
             // set our display name
             tileNameDisplay.text = selectedTile.tileName;
+            // set our info
+            tileFlavorDisplay.text = selectedTile.tileFlavorText;
         }
         else
         {
@@ -56,7 +71,7 @@ public class TileInfoPopup : MonoBehaviour
     // update every second
     IEnumerator UpdateTileInfo()
     {
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(0.25f);
         GetTileInfo();
         StartCoroutine(UpdateTileInfo());
     }

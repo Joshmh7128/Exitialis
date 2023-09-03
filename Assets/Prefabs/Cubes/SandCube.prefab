@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Sand
+  tileFlavorText: Unstable ground, useless under most circumstances.
   tileScanned: 0
   priorityScan: 0
   tileRenderer: {fileID: 1736560838155063077}

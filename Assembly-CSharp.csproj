@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\PlanetGenerator.cs" />
     <Compile Include="Assets\Scripts\Util\NavMeshTest.cs" />
     <Compile Include="Assets\Scripts\TileClass.cs" />
+    <Compile Include="Assets\Scripts\Building.cs" />
     <Compile Include="Assets\Scripts\UI Elements\ScanRequestClass.cs" />
     <Compile Include="Assets\Scripts\TileInfoPopup.cs" />
     <Compile Include="Assets\Scripts\PlayerUIManager.cs" />

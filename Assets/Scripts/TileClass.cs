@@ -7,7 +7,7 @@ public class TileClass : MonoBehaviour
     /// class holds all the info for tiles
 
     [Header("Tile Information")]
-    public string tileName; // our tile's name, ex: Grass Tile, Desert Tile
+    public string tileName, tileFlavorText; // our tile's name, ex: Grass Tile, Desert Tile
     public bool tileScanned, priorityScan; // has this tile been scanned?
     [SerializeField] MeshRenderer tileRenderer;
 

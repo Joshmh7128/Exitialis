@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: Forest
+  tileFlavorText: An extremely dense brush, and an effective source of wood.
   tileScanned: 0
   priorityScan: 0
   tileRenderer: {fileID: 1736560838155063077}
