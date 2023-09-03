@@ -18,9 +18,12 @@ public class Building : MonoBehaviour
     public Dictionary<Itemtypes, float> storedItems = new Dictionary<Itemtypes, float>();
 
     // our building requirements in two lists to make them easier to access in the editor
-    public List<Itemtypes> itemRequiredTypes = new List<Itemtypes>();
-    public List<float> itemRequiredCounts = new List<float>();
+    public List<Itemtypes> itemRequiredConstructionTypes = new List<Itemtypes>();
+    public List<float> itemRequiredConstructionCounts = new List<float>();
     public List<Itemtypes> inputOnlyItems = new List<Itemtypes>(); // items that can ONLY be input to this building
+
+    // has this building been constructed?
+    public bool buildingConstructed;
 
     // for our starting building items
     public List<Itemtypes> startingItems = new List<Itemtypes>();
@@ -44,6 +47,17 @@ public class Building : MonoBehaviour
     // our production requirements
     public float inputRequirement, outputAmount, productionTime;
 
+    // check whether or not we are highlighted by the player's mouse
+    private void OnMouseEnter()
+    {
+        PlayerMouse.instance.highlightedBuilding = this;
+    }
+
+    private void OnMouseExit()
+    {
+        PlayerMouse.instance.highlightedBuilding = null;
+    }
+
     private void Start()
     {
         // setup our building
@@ -62,7 +76,21 @@ public class Building : MonoBehaviour
         {
             storedItems[item] = startingItemCounts[startingItems.IndexOf(item)];
         }
+
+        // request our construction if we have not been built
+        if (!buildingConstructed)
+        {
+            RequestConstruction();
+        }
     }
+
+    // we need to be built
+    void RequestConstruction()
+    {
+        // create requests for each of our building requirements
+
+    }
+
 
     // runs 4 times per second
     IEnumerator QuarterUpdate()
@@ -114,7 +142,7 @@ public class Building : MonoBehaviour
     }
 
     // our building info builder
-    void InfoBuilder()
+    public void InfoBuilder()
     {
         // reset the string
         buildingInfo = "";

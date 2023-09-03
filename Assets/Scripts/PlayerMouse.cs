@@ -82,6 +82,12 @@ public class PlayerMouse : MonoBehaviour
         {
             CreateDroneInfoPopup(highlightedDrone);
         }
+
+        // if we have clicked on a highlighted building
+        if (highlightedBuilding)
+        {
+            CreateBuildingInfoPopup(highlightedBuilding);
+        }
     }
 
     // create a tile info popup for the player to read
@@ -112,6 +118,21 @@ public class PlayerMouse : MonoBehaviour
         PlayerUIManager.instance.ActiveDynamicUIElements.Add(dip.gameObject);
         // send the tile info
         dip.selectedDrone = drone;
+    }
+
+    // create a building info popup for the player to read
+    [SerializeField] GameObject buildingInfoPopupPrefab; // the prefab we will use to build our building info popup
+    void CreateBuildingInfoPopup(Building building)
+    {
+        // clear our UI
+        PlayerUIManager.instance.ClearDynamicUI();
+
+        // instantiate the UI prefab
+        BuildingInfoPopup bip = Instantiate(buildingInfoPopupPrefab, building.transform.position, Quaternion.identity, building.transform).GetComponent<BuildingInfoPopup>();
+        // add this to the active dynamic UIelements
+        PlayerUIManager.instance.ActiveDynamicUIElements.Add(bip.gameObject);
+        // send the information to the info popup
+        bip.selectedBuilding = building;
     }
 
 }

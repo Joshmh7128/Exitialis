@@ -39,6 +39,13 @@ public class PlayerUIManager : MonoBehaviour
                 if (go != null)
                     Destroy(go);
             }
+
+            // if this is a building info popup, destroy the object
+            if (go.GetComponent<BuildingInfoPopup>())
+            {
+                if (go != null)
+                    Destroy(go);
+            }
         }
 
         // rebuild the list

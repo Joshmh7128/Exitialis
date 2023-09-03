@@ -5877,25 +5877,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActiveDynamicUIElements: []
---- !u!114 &2196128123078506541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7735200969585362551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16ad344ea45b3c44a8eed02519155a12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileName: 
-  tileFlavorText: 
-  tileScanned: 0
-  priorityScan: 0
-  hasBuilding: 0
-  buildingRequested: 0
-  tileRenderer: {fileID: 0}
 --- !u!4 &4816309942652845143
 Transform:
   m_ObjectHideFlags: 0
@@ -5921,7 +5902,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4816309942652845143}
-  - component: {fileID: 2196128123078506541}
   - component: {fileID: 7735200969585362552}
   m_Layer: 0
   m_Name: MouseSelector
@@ -5952,6 +5932,8 @@ MonoBehaviour:
   tileInfoPopupPrefab: {fileID: 5457878532055145206, guid: ebd5315c81f92804da6297c050782f2d,
     type: 3}
   droneInfoPopupPrefab: {fileID: 6554293795647843138, guid: 989d1191d2fb9d64482c9bb1c7f13953,
+    type: 3}
+  buildingInfoPopupPrefab: {fileID: 5457878532055145206, guid: 683a5d0cb33f61849bc98f3b7a1762ca,
     type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

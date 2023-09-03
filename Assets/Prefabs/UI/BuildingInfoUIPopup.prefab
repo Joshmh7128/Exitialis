@@ -1109,6 +1109,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6263405270594172176}
+  - component: {fileID: 2542904102218865659}
   - component: {fileID: 7027090976566824736}
   - component: {fileID: 647130072011902275}
   m_Layer: 0
@@ -1135,6 +1136,22 @@ Transform:
   - {fileID: 7987363178096497043}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2542904102218865659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5457878532055145206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 657114643ebe7d04299ce10ccf1c9794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedBuilding: {fileID: 0}
+  canvasParent: {fileID: 7987363178096497043}
+  buildingNameDisplay: {fileID: 6779433087380174975}
+  buildingInfoDisplay: {fileID: 341816519755244747}
 --- !u!65 &7027090976566824736
 BoxCollider:
   m_ObjectHideFlags: 0

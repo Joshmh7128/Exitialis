@@ -16,8 +16,9 @@ public class BuildingInfoPopup : MonoBehaviour
         // look at the camera
         canvasParent.LookAtCamera();
         // at the very start of us, get the information of the selected tile
-        GetDroneInfo();
-        // setup the building request buttons we can build here
+        GetBuildingInfo();
+        // start the building update
+        StartCoroutine(UpdateBuildingInfo());
     }
 
     // make sure we update our view every frame so that we can see the drone's status
@@ -27,7 +28,7 @@ public class BuildingInfoPopup : MonoBehaviour
     }
 
     // get our tile info
-    void GetDroneInfo()
+    void GetBuildingInfo()
     {
         // set our display name
         buildingNameDisplay.text = selectedBuilding.buildingName;
@@ -35,12 +36,11 @@ public class BuildingInfoPopup : MonoBehaviour
         buildingInfoDisplay.text = selectedBuilding.buildingInfo;
     }
 
-
     // update every second
-    IEnumerator UpdateDroneInfo()
+    IEnumerator UpdateBuildingInfo()
     {
         yield return new WaitForSecondsRealtime(0.5f);
-        GetDroneInfo();
-        StartCoroutine(UpdateDroneInfo());
+        GetBuildingInfo();
+        StartCoroutine(UpdateBuildingInfo());
     }
 }

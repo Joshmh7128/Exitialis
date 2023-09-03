@@ -43,6 +43,7 @@ public class TileClass : MonoBehaviour
     // put in a building request
     public void RequestBuilding(GameObject buildingPrefab)
     {
+        if (buildingRequested) return; // don't continue if we already have requested a building on this tile
         // we have requested a building
         buildingRequested = true;
         // get our building information
@@ -54,8 +55,8 @@ public class TileClass : MonoBehaviour
         droneRequest.receivingTileClass = this;
         droneRequest.requestType = DroneRequest.RequestTypes.construction;
         // add our building requirements
-        foreach (Building.Itemtypes item in building.itemRequiredTypes)
-            droneRequest.constructionRequirements.Add(item, building.itemRequiredCounts[building.itemRequiredTypes.IndexOf(item)]);
+        foreach (Building.Itemtypes item in building.itemRequiredConstructionTypes)
+            droneRequest.constructionRequirements.Add(item, building.itemRequiredConstructionCounts[building.itemRequiredConstructionTypes.IndexOf(item)]);
         // add this request to the drone manager
         DroneManager.instance.droneRequests.Add(droneRequest);
         droneRequest.CreateDeliveriesForConstruction();
