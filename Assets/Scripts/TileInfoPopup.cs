@@ -71,7 +71,8 @@ public class TileInfoPopup : MonoBehaviour
     // update every second
     IEnumerator UpdateTileInfo()
     {
-        yield return new WaitForSecondsRealtime(0.25f);
+        yield return new WaitForSecondsRealtime(0.25
+            f);
         GetTileInfo();
         StartCoroutine(UpdateTileInfo());
     }
