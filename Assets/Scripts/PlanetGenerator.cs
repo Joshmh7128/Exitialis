@@ -25,6 +25,10 @@ public class PlanetGenerator : MonoBehaviour
     [SerializeField] List<GameObject> tilePrefabs = new List<GameObject>();
     [SerializeField] List<int> tileWeights = new List<int>();
 
+    // here is our list of special tiles that are added into the mix after the generation is complete, and before the tiles are instantiated
+    [SerializeField] List<GameObject> specialTiles = new List<GameObject>();
+    [SerializeField] List<int> specialTileAmounts = new List<int>();
+
     // our instance
     public static PlanetGenerator instance;
     private void Awake() => instance = this; // set our instance
@@ -72,6 +76,9 @@ public class PlanetGenerator : MonoBehaviour
         // output our grid
         GeneratedGrid = new int[PlanetSize, PlanetSize];
         GeneratedGrid = LookupGrid;
+
+        // add in special tiles
+        SpecialTilePlacement();
 
         // spawn the planet
         for (int x = 0; x < PlanetSize; x++)
@@ -237,6 +244,15 @@ public class PlanetGenerator : MonoBehaviour
         return 0;
     }
 
+    // special tile construction
+    void SpecialTilePlacement()
+    {
+        // our first two specials are always going to be the starter building and drone
+        // place our starter building in the center, then our drone next to it
+        GeneratedGrid[PlanetSize / 2, PlanetSize / 2] = tilePrefabs.Count; // this will be the 0th special tile
+        GeneratedGrid[PlanetSize / 2 + 1, PlanetSize / 2] = tilePrefabs.Count+1; // this will be the 1st special tile
+    }
+
     // checks for our neighbors:            up,      down,      left,     right
     int[,] NeighborChecks = new int[,] { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
 
@@ -285,10 +301,20 @@ public class PlanetGenerator : MonoBehaviour
     // spawn in tiles based off of information
     void SpawnTile(int x, int z)
     {
-        // place a tile according to the lookup grid's information
-        TileClass tile = Instantiate(tilePrefabs[GeneratedGrid[x, z]], new Vector3(transform.position.x + x, 0, transform.position.z + z), Quaternion.Euler(0, Random.Range(0, 5) * 90, 0), transform).GetComponent<TileClass>();
-        // add that to our final reference grid of tiles
-        PlanetTiles[x, z] = tile;
+        if (GeneratedGrid[x, z] < tilePrefabs.Count)
+        {
+            // place a tile according to the lookup grid's information
+            TileClass tile = Instantiate(tilePrefabs[GeneratedGrid[x, z]], new Vector3(transform.position.x + x, 0, transform.position.z + z), Quaternion.Euler(0, Random.Range(0, 5) * 90, 0), transform).GetComponent<TileClass>();
+            // add that to our final reference grid of tiles
+            PlanetTiles[x, z] = tile;
+        }
+        else
+        {
+            // place a tile according to the lookup grid's information
+            TileClass tile = Instantiate(specialTiles[tilePrefabs.Count+1-GeneratedGrid[x, z]], new Vector3(transform.position.x + x, 0, transform.position.z + z), Quaternion.Euler(0, Random.Range(0, 5) * 90, 0), transform).GetComponent<TileClass>();
+            // add that to our final reference grid of tiles
+            PlanetTiles[x, z] = tile;
+        }
     }
 
 }

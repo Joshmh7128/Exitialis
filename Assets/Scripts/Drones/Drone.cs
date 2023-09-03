@@ -15,6 +15,7 @@ public class Drone : MonoBehaviour
 
     // how much can our drone hold?
     public float droneStorage;
+    public Dictionary<Building.Itemtypes, float> storedItems = new Dictionary<Building.Itemtypes, float>();
 
     // the states our drone can be in
     public enum DroneStates
@@ -63,16 +64,17 @@ public class Drone : MonoBehaviour
     // set our behaviour based on our current state
     void SetBehaviour()
     {
-        // set our state
-        currentState = possibleStates[currentPossibleState];
         // activate the state
         switch(currentState)
         {
             case DroneStates.recharge:
                 break;
             case DroneStates.delivery:
+                currentBehaviourString = "Delivering";
+                StartCoroutine(DeliveryBehaviour());
                 break;
             case DroneStates.construction:
+                currentBehaviourString = "Constructing";
                 break;
             case DroneStates.repair:
                 break;
@@ -88,12 +90,18 @@ public class Drone : MonoBehaviour
     {
         // setting our next possible state
         if (currentPossibleState + 1 < possibleStates.Count)
+        {
             currentPossibleState++;
+            // then set our current state
+            currentState = possibleStates[currentPossibleState];
+            return;
+        }
         else if (currentPossibleState + 1 >= possibleStates.Count)
-            currentState = 0;
-
-        // then set our current state
-        currentState = possibleStates[currentPossibleState];
+        {
+            currentPossibleState = 0;
+            currentState = possibleStates[0];
+            return;
+        }
     }
 
     // our exploration behaviour
@@ -147,6 +155,112 @@ public class Drone : MonoBehaviour
         SetBehaviour();
         // end the coroutine
         yield break;
+    }
+
+    // our delivery behaviour
+    IEnumerator DeliveryBehaviour()
+    {
+        Debug.Log("Delivery Attempted");
+        // check our drone request list for open delivery or construction delivery tasks
+        DroneRequest request = null;
+        for(int i = 0; i < DroneManager.instance.droneRequests.Count; i++)
+            if (DroneManager.instance.droneRequests[i].requestType == DroneRequest.RequestTypes.delivery || DroneManager.instance.droneRequests[i].requestType == DroneRequest.RequestTypes.construction)
+            {
+                // if this is a delivery, it becomes our task
+                if (DroneManager.instance.droneRequests[i].requestType == DroneRequest.RequestTypes.delivery)
+                {
+                    request = DroneManager.instance.droneRequests[i];
+                    Debug.Log("found request");
+                    Debug.Log("Requesting: " + request.requestedItem + " for " + request.requestedAmount);
+                }
+            }
+
+        // if we don't find anything break out of the coroutine
+        if (request == null)
+        {
+            // choose the next state
+            NextState();
+            // start the next state
+            SetBehaviour();
+            yield break;
+        }
+
+        // find the request object in our buildings
+        float closestDistance = PlanetGenerator.instance.PlanetSize; Building closestBuilding = null; 
+        foreach (Building building in BuildingManager.instance.buildings)
+        {
+            // if this building has the item we need and it is not an input only item on that building then we can take it
+            if (building.storedItems.ContainsKey(request.requestedItem) && !building.inputOnlyItems.Contains(request.requestedItem) && building.storedItems[request.requestedItem] > request.requestedAmount)
+            {
+                // if this is closest...
+                if (Vector3.Distance(transform.position, building.transform.position) < closestDistance)
+                {
+                    closestDistance = Vector3.Distance(transform.position, building.transform.position);
+                    closestBuilding = building;
+                }
+            }
+        }
+
+        // go to our closest building to retrieve the item
+        navMeshAgent.SetDestination(new Vector3(closestBuilding.transform.position.x, transform.position.y, closestBuilding.transform.position.z));
+        yield return new WaitUntil(AtTaskLocation);
+        
+        // when we are at the location pickup the items
+        if (closestBuilding.storedItems.ContainsKey(request.requestedItem) && closestBuilding.storedItems[request.requestedItem] >= request.requestedAmount)
+        {
+            // then transfer the item to us
+            closestBuilding.storedItems[request.requestedItem] -= request.requestedAmount;
+            if (!storedItems.ContainsKey(request.requestedItem))
+                storedItems.Add(request.requestedItem, request.requestedAmount);
+            else
+            {
+                storedItems[request.requestedItem] += request.requestedAmount;
+            }
+        }
+        else // if in the process of getting to the building we don't have the items anymore, we have to find a new task
+        {
+            // move to the next behaviour
+            NextState();
+            // start the next state
+            SetBehaviour();
+            yield break;
+        }
+
+        // if we are holding all of the items we need, go to our destination to deliver them
+        // are we going to a building or to a tile?
+        if (request.receivingBuilding != null)
+            navMeshAgent.SetDestination(new Vector3(request.receivingBuilding.transform.position.x, transform.position.y, request.receivingBuilding.transform.position.z));
+        else if (request.receivingTileClass != null)
+            navMeshAgent.SetDestination(new Vector3(request.receivingTileClass.transform.position.x, transform.position.y, request.receivingTileClass.transform.position.z));
+
+        // then wait for the drone to get to the location
+        yield return new WaitUntil(AtTaskLocation);
+
+        // then deliver the items
+        if (request.receivingBuilding != null)
+        {
+            // add to the building
+            request.receivingBuilding.storedItems.Add(request.requestedItem, storedItems[request.requestedItem]);
+            // remove from ourselves
+            storedItems[request.requestedItem] -= request.requestedAmount;
+            // we have successfully completed the task of delivery
+            request.CompleteRequest();
+        }
+        else if(request.receivingTileClass != null)
+        {
+            // add to the building
+            request.receivingTileClass.storedItems.Add(request.requestedItem, storedItems[request.requestedItem]);
+            // remove from ourselves
+            storedItems[request.requestedItem] -= request.requestedAmount;
+            // we have successfully completed the task of delivery
+            request.CompleteRequest();
+        }
+
+        // advance our state
+        NextState();
+        // set our next state
+        SetBehaviour();
+        yield return null;  
     }
 
     // reports on the progress the drone has made on its task

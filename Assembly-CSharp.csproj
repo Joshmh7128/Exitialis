@@ -59,18 +59,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Util\ExtentionMethods.cs" />
+    <Compile Include="Assets\Scripts\UI Elements\BuildingRequestClass.cs" />
     <Compile Include="Assets\Scripts\Drones\Drone.cs" />
-    <Compile Include="Assets\Scripts\DroneInfoPopup.cs" />
+    <Compile Include="Assets\Scripts\Drones\DroneManager.cs" />
     <Compile Include="Assets\Scripts\DebugUIHandler.cs" />
     <Compile Include="Assets\Scripts\PlanetGenerator.cs" />
     <Compile Include="Assets\Scripts\Util\NavMeshTest.cs" />
     <Compile Include="Assets\Scripts\TileClass.cs" />
     <Compile Include="Assets\Scripts\Building.cs" />
     <Compile Include="Assets\Scripts\UI Elements\ScanRequestClass.cs" />
-    <Compile Include="Assets\Scripts\TileInfoPopup.cs" />
     <Compile Include="Assets\Scripts\PlayerUIManager.cs" />
+    <Compile Include="Assets\Scripts\UI Elements\DroneInfoPopup.cs" />
     <Compile Include="Assets\Scripts\PlayerMouse.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\BuildingManager.cs" />
+    <Compile Include="Assets\Scripts\UI Elements\TileInfoPopup.cs" />
+    <Compile Include="Assets\Scripts\UI Elements\BuildingInfoPopup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\VolumetricLights\Resources\Shaders\Particles\DustParticlesForwardPass.hlsl" />

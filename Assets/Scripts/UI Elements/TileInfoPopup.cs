@@ -10,6 +10,7 @@ public class TileInfoPopup : MonoBehaviour
     [SerializeField] Transform canvasParent; // our canvas parent
     [SerializeField] Text tileNameDisplay, tileFlavorDisplay; // displays the tile's name
     [SerializeField] GameObject scanInfoRequestPrefab; // our request to spawn on an object if it has not been scanned
+    [SerializeField] GameObject buildingRequestPrefab; // the button we can push to request buildings
     [SerializeField] Transform requestGroup; // the group that handles all of our requests
 
     // start runs when the object first exists in the world
@@ -42,6 +43,16 @@ public class TileInfoPopup : MonoBehaviour
             scan.parentClass = selectedTile;
             scan.toggle.isOn = selectedTile.priorityScan;
         }
+        
+        // if this is a scanned tile then setup a building request
+        if (selectedTile.tileScanned)
+        {
+            BuildingRequestClass building = Instantiate(buildingRequestPrefab, requestGroup).GetComponent<BuildingRequestClass>();
+            building.parentClass = selectedTile;
+            building.toggle.isOn = selectedTile.buildingRequested;
+            // for the sake of this, we can only build the test building
+            building.buildingPrefab = BuildingManager.instance.buildingPrefabs[(int)BuildingManager.BuildingTypes.test];
+        }
     }
 
     // get our tile info
@@ -50,10 +61,11 @@ public class TileInfoPopup : MonoBehaviour
         // has this tile been scanned by a drone?
         if (selectedTile.tileScanned)
         {
-            // kill all our requests
-            foreach(Transform t in requestGroup)
+            // remove the scan priority request
+            foreach (Transform t in requestGroup)
             {
-                Destroy(t.gameObject);
+                if (t.gameObject.GetComponent<ScanRequestClass>())
+                    Destroy(t.gameObject);
             }
 
             // set our display name
@@ -65,6 +77,7 @@ public class TileInfoPopup : MonoBehaviour
         {
             // set our display name
             tileNameDisplay.text = "Unscanned";
+            tileFlavorDisplay.text = "";
         }
     }
 

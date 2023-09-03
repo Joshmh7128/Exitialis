@@ -8,8 +8,11 @@ public class TileClass : MonoBehaviour
 
     [Header("Tile Information")]
     public string tileName, tileFlavorText; // our tile's name, ex: Grass Tile, Desert Tile
-    public bool tileScanned, priorityScan; // has this tile been scanned?
+    public bool tileScanned, priorityScan, hasBuilding, buildingRequested; // has this tile been scanned? does it want a priority scan? does this tile have a building?
     [SerializeField] MeshRenderer tileRenderer;
+
+    // items we can have delivered for building construction
+    public Dictionary<Building.Itemtypes, float> storedItems = new Dictionary<Building.Itemtypes, float>();
 
     private void Start()
     {
@@ -27,7 +30,7 @@ public class TileClass : MonoBehaviour
     {
         // if we are not scanned set our material to dark
         if (!tileScanned)
-            tileRenderer.material.color = Color.black;
+            tileRenderer.material.color = Color.white;
     }
 
     // anything that happens on scan
@@ -35,5 +38,32 @@ public class TileClass : MonoBehaviour
     {
         // when we become scanned set our material to white
         tileRenderer.material.color = Color.white;
+    }
+
+    // put in a building request
+    public void RequestBuilding(GameObject buildingPrefab)
+    {
+        // we have requested a building
+        buildingRequested = true;
+        // get our building information
+        Building building = buildingPrefab.GetComponent<Building>();
+        // create a new building request
+        DroneRequest droneRequest = new DroneRequest();
+        // build the request
+        droneRequest.constructableBuilding = buildingPrefab;
+        droneRequest.receivingTileClass = this;
+        droneRequest.requestType = DroneRequest.RequestTypes.construction;
+        // add our building requirements
+        foreach (Building.Itemtypes item in building.itemRequiredTypes)
+            droneRequest.constructionRequirements.Add(item, building.itemRequiredCounts[building.itemRequiredTypes.IndexOf(item)]);
+        // add this request to the drone manager
+        DroneManager.instance.droneRequests.Add(droneRequest);
+        droneRequest.CreateDeliveriesForConstruction();
+    }
+
+    // begin construction
+    public void ConstructBuilding(GameObject buildingPrefab)
+    {
+
     }
 }

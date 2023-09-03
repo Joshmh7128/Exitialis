@@ -13,6 +13,7 @@ public class PlayerMouse : MonoBehaviour
     [SerializeField] float lerpSpeed; // how fast we lerp to our target positions
     public TileClass highlightedTile; // which tile have we highlighted?
     public Drone highlightedDrone; // is a drone highlighted?
+    public Building highlightedBuilding; // is a building highlighted?
 
     private void Start()
     {
@@ -35,6 +36,13 @@ public class PlayerMouse : MonoBehaviour
             targetPosition = highlightedTile.transform.position;
             targetScale = Vector3.one;
         }
+
+        if (highlightedBuilding)
+        {
+            targetPosition = highlightedBuilding.transform.position;
+            targetScale = new Vector3(0.5f, 1, 0.5f);
+        }
+
         if (highlightedDrone)
         {
             targetPosition = highlightedDrone.transform.position + highlightedDrone.positionOffset;
