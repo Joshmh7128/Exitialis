@@ -34,6 +34,7 @@ public class BuildingRequestClass : MonoBehaviour
     // for the onchange event of our toggle
     public void SetBuildingRequest()
     {
-        parentClass.RequestBuilding(buildingPrefab);
+        if (toggle.isOn)
+            parentClass.RequestBuilding(buildingPrefab);
     }
 }

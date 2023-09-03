@@ -14,7 +14,7 @@ public class DroneManager : MonoBehaviour
 
 public class DroneRequest
 {
-    public Drone assignedDrone; // this is null until a drone picks up the task
+    public Drone assignedDrone = null; // this is null until a drone picks up the task
 
     public enum RequestTypes
     {
@@ -58,6 +58,7 @@ public class DroneRequest
             droneRequest.receivingTileClass = receivingTileClass;
             // add this request to the list
             DroneManager.instance.droneRequests.Add(droneRequest);
+            Debug.Log(droneRequest.requestType.ToString() + " request created");
         }
     }
 
@@ -66,5 +67,6 @@ public class DroneRequest
     {
         DroneManager.instance.droneRequests.Remove(this);
         Debug.Log(DroneManager.instance.droneRequests);
+        Debug.Log(requestType.ToString() + " Request Completed");
     }
 }

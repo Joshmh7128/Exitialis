@@ -17,6 +17,8 @@ public class DroneInfoPopup : MonoBehaviour
         canvasParent.LookAtCamera();
         // at the very start of us, get the information of the selected tile
         GetDroneInfo();
+        // start our update
+        StartCoroutine(UpdateDroneInfo());
     }
 
     // make sure we update our view every frame so that we can see the drone's status

@@ -118,7 +118,6 @@ public class Drone : MonoBehaviour
             }
         }
 
-
         float closestPdistance = PlanetGenerator.instance.PlanetSize; TileClass closestPtile = PlanetGenerator.instance.PlanetTiles[0, 0];
         // are there any priority tiles?
         foreach (TileClass tile in PlanetGenerator.instance.PlanetTiles)
@@ -164,14 +163,13 @@ public class Drone : MonoBehaviour
         // check our drone request list for open delivery or construction delivery tasks
         DroneRequest request = null;
         for(int i = 0; i < DroneManager.instance.droneRequests.Count; i++)
-            if (DroneManager.instance.droneRequests[i].requestType == DroneRequest.RequestTypes.delivery || DroneManager.instance.droneRequests[i].requestType == DroneRequest.RequestTypes.construction)
+            if (DroneManager.instance.droneRequests[i].requestType == DroneRequest.RequestTypes.delivery)
             {
-                // if this is a delivery, it becomes our task
-                if (DroneManager.instance.droneRequests[i].requestType == DroneRequest.RequestTypes.delivery)
+                // make sure this isn't assigned to another drone
+                if (DroneManager.instance.droneRequests[i].assignedDrone == null)
                 {
                     request = DroneManager.instance.droneRequests[i];
-                    Debug.Log("found request");
-                    Debug.Log("Requesting: " + request.requestedItem + " for " + request.requestedAmount);
+                    request.assignedDrone = this;
                 }
             }
 
@@ -248,7 +246,10 @@ public class Drone : MonoBehaviour
         }
         else if(request.receivingTileClass != null)
         {
-            // add to the building
+            // does the building already have the key that we need?
+            if (request.receivingTileClass.storedItems.ContainsKey(request.requestedItem))
+                request.receivingTileClass.storedItems[request.requestedItem] += request.requestedAmount;
+            else // if it doesn't have the key then add to the building
             request.receivingTileClass.storedItems.Add(request.requestedItem, storedItems[request.requestedItem]);
             // remove from ourselves
             storedItems[request.requestedItem] -= request.requestedAmount;
