@@ -90,6 +90,12 @@ MonoBehaviour:
   - 10
   inputOnlyItems: 
   buildingConstructed: 0
+  constructionRequested: 0
+  deliveriesRequested: 0
+  readyForConstructionLabor: 0
+  constructionSiteModel: {fileID: 404667347931891731}
+  finalBuildingModel: {fileID: 8717536704084559525}
+  constructionLabor: 10
   startingItems: 
   startingItemCounts: []
   outputType: 0

@@ -85,7 +85,8 @@ public class Drone : MonoBehaviour
                 break;
             case DroneStates.construction:
                 currentBehaviourString = "Constructing";
-                break;
+                StartCoroutine(ConstructionBehaviour());
+                    break;
             case DroneStates.repair:
                 break;
             case DroneStates.explore:
@@ -181,7 +182,7 @@ public class Drone : MonoBehaviour
     IEnumerator DeliveryBehaviour()
     {
         Debug.Log("Delivery check starting...");
-        // check our drone request list for open delivery or construction delivery tasks
+        // check our drone request list for open delivery tasks
         DroneRequest request = null;
         for(int i = 0; i < DroneManager.instance.droneRequests.Count; i++)
             if (DroneManager.instance.droneRequests[i].requestType == DroneRequest.RequestTypes.delivery)
@@ -266,12 +267,22 @@ public class Drone : MonoBehaviour
         if (request.receivingBuilding != null)
         {
             // debug
-            Debug.Log("items delivered");   
+            Debug.Log("items delivered");
 
             // add to the building
-            request.receivingBuilding.storedItems.Add(request.requestedItem, storedItems[request.requestedItem]);
-            // remove from ourselves
-            storedItems[request.requestedItem] -= request.requestedAmount;
+            if (request.receivingBuilding.storedItems.ContainsKey(request.requestedItem))       
+            {
+                // give the items
+                request.receivingBuilding.storedItems[request.requestedItem] += request.requestedAmount;
+                storedItems[request.requestedItem] -= request.requestedAmount;
+            } else if (!request.receivingBuilding.storedItems.ContainsKey(request.requestedItem))
+            {
+                // add the key
+                request.receivingBuilding.storedItems.Add(request.requestedItem, storedItems[request.requestedItem]);
+
+                // remove from ourselves
+                storedItems[request.requestedItem] -= request.requestedAmount;
+            }
             // we have successfully completed the task of delivery
             request.CompleteRequest();
         }
@@ -281,6 +292,55 @@ public class Drone : MonoBehaviour
         // set our next state
         SetBehaviour();
         yield return null;  
+    }
+
+    // our construction behaviour
+    IEnumerator ConstructionBehaviour()
+    {
+        // find a construction request
+        // check our drone request list for open construction tasks
+        DroneRequest request = null;
+        for (int i = 0; i < DroneManager.instance.droneRequests.Count; i++)
+            if (DroneManager.instance.droneRequests[i].requestType == DroneRequest.RequestTypes.construction)
+            {
+                // is the request ready for construction
+                // make sure this isn't assigned to another drone
+                if (DroneManager.instance.droneRequests[i].assignedDrone == null && DroneManager.instance.droneRequests[i].receivingBuilding.readyForConstructionLabor)
+                {
+                    request = DroneManager.instance.droneRequests[i];
+                    request.assignedDrone = this;
+                }
+            }
+
+        // if there are no construction requests available
+        if (request == null)
+        {
+            NextState();
+            SetBehaviour();
+            yield break;
+        }
+
+        // go to our construction site
+        navMeshAgent.SetDestination(new Vector3(request.receivingBuilding.transform.position.x, transform.position.y, request.receivingBuilding.transform.position.z));
+
+        // wait until we get there
+        yield return new WaitUntil(AtTaskLocation);
+
+        // set our UI to active
+        worldSpaceUIParent.SetActive(true);
+        // perform our construction labor
+        progressSlider.value = 0;
+        sliderProgressSpeed = 100/request.constructionSite.constructionLabor; // get the amount of seconds in %
+        StartCoroutine(ProcessSliderVisual());
+        // wait until the task is complete
+        yield return new WaitUntil(TaskProgressComplete);
+        // complete the construction
+        request.constructionSite.constructionLabor = 0;
+        // set our UI to active
+        worldSpaceUIParent.SetActive(false);
+        // once the task is complete, go to the next task
+        NextState();
+        SetBehaviour();
     }
 
     // reports on the progress the drone has made on its task
@@ -311,5 +371,4 @@ public class Drone : MonoBehaviour
         }
         yield break;
     }
-
 }

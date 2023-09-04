@@ -23,8 +23,15 @@ public class Building : MonoBehaviour
     public List<Itemtypes> inputOnlyItems = new List<Itemtypes>(); // items that can ONLY be input to this building
 
     // has this building been constructed? this building will be a "construction site" until it receives all of the resources it needs
-    public bool buildingConstructed;
-    public bool constructionRequested, deliveriesRequested; // have we requested our construction?
+    public bool buildingConstructed = false;
+    public bool constructionRequested, deliveriesRequested, readyForConstructionLabor; // have we requested our construction?
+    bool finalRun; // has our final function run?
+
+    // our transforms for children
+    [SerializeField] GameObject constructionSiteModel, finalBuildingModel; 
+
+    // how much labor does this building cost?
+    public int constructionLabor; 
 
     // for our starting building items
     public List<Itemtypes> startingItems = new List<Itemtypes>();
@@ -72,6 +79,9 @@ public class Building : MonoBehaviour
         // add ourselves to the building manager
         BuildingManager.instance.buildings.Add(this);
 
+        // make sure we have nothing in our inventory   
+        storedItems.Clear();
+
         // setup our starting items
         foreach (var item in startingItems)
         {
@@ -97,6 +107,7 @@ public class Building : MonoBehaviour
             request.constructionRequirements.Add(requirement, itemRequiredConstructionCounts[itemRequiredConstructionTypes.IndexOf(requirement)]);
         request.requestType = DroneRequest.RequestTypes.construction; // set it to be a construction task so that the delivery tasks can be requested
         request.receivingBuilding = this; // ask for the stuff we need
+        request.constructionSite = this; // we are the construction site
         DroneManager.instance.droneRequests.Add(request);
         // then ask the task to create the delivery requests
         request.CreateDeliveriesForConstruction(this);
@@ -133,21 +144,38 @@ public class Building : MonoBehaviour
     {
         bool hasItems = true; // do we have our items?
 
-        foreach (var item in itemRequiredConstructionTypes)
-        {
-            // check to see if our stored items dictionary has enough of each item
-            if (storedItems.ContainsKey(item))
+        // only check our inventory if we have not finished construction
+        if (!buildingConstructed)
+            foreach (Itemtypes item in itemRequiredConstructionTypes)
             {
-                if (storedItems[item] >= itemRequiredConstructionCounts[itemRequiredConstructionTypes.IndexOf(item)])
+                // check to see if our stored items dictionary has enough of each item
+                if (storedItems.ContainsKey(item))
+                {
+                    if (storedItems[item] < itemRequiredConstructionCounts[itemRequiredConstructionTypes.IndexOf(item)])
+                    {
+                        hasItems = false;
+                    }
+                }
+
+                if (!storedItems.ContainsKey(item))
+                {
                     hasItems = false;
+                }
             }
+
+        // can we build this thing? 
+        if (hasItems == true && !buildingConstructed)
+        {
+            Debug.Log(hasItems);
+            Debug.Log("building ready for construction");
+            readyForConstructionLabor = true;
         }
-
-        // if we dont have any items, return
-        if (!hasItems) return;
-
-        // if we have all of our items
-        Debug.Log(name + " is ready for construction labor");
+        // if our labor is complete
+        if (constructionLabor <= 0)
+        {
+            // if (buildingConstructed) return;
+            FinalizeConstruction();
+        }
     }
 
     // where our actual production is yielded
@@ -174,6 +202,24 @@ public class Building : MonoBehaviour
         }
     }
 
+    // where the building itself is turned from a construction site into a building
+    void FinalizeConstruction()
+    {
+        if (finalRun) return;
+        // we did it!
+        finalRun = true;
+        buildingConstructed = true;
+        // remove all of our required items for what they cost
+        foreach (var item in itemRequiredConstructionTypes)
+        {
+            storedItems[item] -= itemRequiredConstructionCounts[itemRequiredConstructionTypes.IndexOf(item)];
+        }
+
+        // enable our real building child object
+        finalBuildingModel.SetActive(true);
+        // disbale the construction site child
+        constructionSiteModel.SetActive(false);
+    }
     // our building info builder
     public void InfoBuilder()
     {
@@ -184,11 +230,23 @@ public class Building : MonoBehaviour
         if (!buildingConstructed)
         {
             buildingInfo = "Building under construction..." + "\n";
+            bool ready = true;
             // then add in our needs
-            foreach (var key in itemRequiredConstructionTypes)
+            foreach (Itemtypes key in itemRequiredConstructionTypes)
             {
-                buildingInfo += "Needs " + itemRequiredConstructionCounts[itemRequiredConstructionTypes.IndexOf(key)].ToString() + " " + key + "\n";
+                // if we are storing fewer than the required amount of construction items, write that
+                if (!storedItems.ContainsKey(key))
+                    storedItems.Add(key, 0);
+
+                if (storedItems[key] < itemRequiredConstructionCounts[itemRequiredConstructionTypes.IndexOf(key)])
+                {
+                    buildingInfo += "Needs " + itemRequiredConstructionCounts[itemRequiredConstructionTypes.IndexOf(key)].ToString() + " " + key + "\n";
+                    ready = false;
+                }
             }
+            // are we ready?
+            if (ready && constructionLabor > 0)
+                buildingInfo = "Remaining Construction Labor: " + constructionLabor + "\n";
         }
 
         // add in our storage information

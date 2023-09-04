@@ -1522,9 +1522,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   droneName: Starter Drone
+  droneInventoryString: 
   currentBehaviourString: 
   droneStorage: 1000
-  possibleStates: 0400000001000000
+  possibleStates: 040000000100000002000000
   currentState: 4
   positionOffset: {x: 0, y: -1.5, z: 0}
   worldSpaceUIParent: {fileID: 8525844348182088790}

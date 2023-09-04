@@ -30,6 +30,7 @@ public class DroneRequest
 
     // for our construction
     public GameObject constructableBuilding; // the building prefab we want to build
+    public Building constructionSite; // the construction site of where we are going to build this building
     public Dictionary<Building.Itemtypes, float> constructionRequirements = new Dictionary<Building.Itemtypes, float>(); // what we need in order to build this building
     public TileClass receivingTileClass = null;
 
