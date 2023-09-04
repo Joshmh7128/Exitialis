@@ -8,7 +8,7 @@ public class DroneInfoPopup : MonoBehaviour
     /// script grabs and populates an info popup panel when a tile is selected
     public Drone selectedDrone; // the tile we are currently reading
     [SerializeField] Transform canvasParent; // our canvas parent
-    [SerializeField] Text droneNameDisplay, droneStateDisplay; // displays the tile's name
+    [SerializeField] Text droneNameDisplay, droneStateDisplay, droneInventoryDisplay; // displays the drone information
 
     // start runs when the object first exists in the world
     private void Start()
@@ -34,6 +34,8 @@ public class DroneInfoPopup : MonoBehaviour
         droneNameDisplay.text = selectedDrone.droneName;
         // set our current ai state
         droneStateDisplay.text = selectedDrone.currentBehaviourString;
+        // set our inventory
+        droneInventoryDisplay.text = selectedDrone.droneInventoryString;
     }
 
     // update every second

@@ -11,6 +11,7 @@ public class Drone : MonoBehaviour
 
     // our drone information
     public string droneName; // the name of our drone, ex: Delivery Drone, Construction Drone
+    public string droneInventoryString; // what is our drone holding?
     public string currentBehaviourString; // our current behaviour
 
     // how much can our drone hold?
@@ -48,6 +49,15 @@ public class Drone : MonoBehaviour
     void LateStart()
     {
         SetBehaviour();
+        // start our quater loop
+        StartCoroutine(QuarterLoop());
+    }
+
+    // runs four times every second
+    IEnumerator QuarterLoop()
+    {
+        UpdateInventoryInfo();
+        yield return new WaitForSecondsRealtime(0.25f);
     }
 
     // check whether or not we are highlighted by the player's mouse
@@ -101,6 +111,17 @@ public class Drone : MonoBehaviour
             currentPossibleState = 0;
             currentState = possibleStates[0];
             return;
+        }
+    }
+
+    void UpdateInventoryInfo()
+    {
+        droneInventoryString = "";
+        // add all of our inventory items to it
+        foreach (Building.Itemtypes key in storedItems.Keys)
+        {
+            if (storedItems[key] > 0)
+                droneInventoryString += "Holding " + storedItems[key].ToString() + " " + key + "\n";
         }
     }
 
@@ -159,7 +180,7 @@ public class Drone : MonoBehaviour
     // our delivery behaviour
     IEnumerator DeliveryBehaviour()
     {
-        Debug.Log("Delivery Attempted");
+        Debug.Log("Delivery check starting...");
         // check our drone request list for open delivery or construction delivery tasks
         DroneRequest request = null;
         for(int i = 0; i < DroneManager.instance.droneRequests.Count; i++)
@@ -183,7 +204,7 @@ public class Drone : MonoBehaviour
             yield break;
         }
 
-        // find the request object in our buildings
+        // find the requested object in our buildings
         float closestDistance = PlanetGenerator.instance.PlanetSize; Building closestBuilding = null; 
         foreach (Building building in BuildingManager.instance.buildings)
         {
@@ -201,6 +222,8 @@ public class Drone : MonoBehaviour
 
         // go to our closest building to retrieve the item
         navMeshAgent.SetDestination(new Vector3(closestBuilding.transform.position.x, transform.position.y, closestBuilding.transform.position.z));
+
+        // wait until we are at the location to pickup our items
         yield return new WaitUntil(AtTaskLocation);
         
         // when we are at the location pickup the items
@@ -214,6 +237,9 @@ public class Drone : MonoBehaviour
             {
                 storedItems[request.requestedItem] += request.requestedAmount;
             }
+            // items picked up
+            Debug.Log("items picked up");
+
         }
         else // if in the process of getting to the building we don't have the items anymore, we have to find a new task
         {
@@ -228,8 +254,10 @@ public class Drone : MonoBehaviour
         // are we going to a building or to a tile?
         if (request.receivingBuilding != null)
             navMeshAgent.SetDestination(new Vector3(request.receivingBuilding.transform.position.x, transform.position.y, request.receivingBuilding.transform.position.z));
+
+        /* // we are not doing tile deliveries anymore!
         else if (request.receivingTileClass != null)
-            navMeshAgent.SetDestination(new Vector3(request.receivingTileClass.transform.position.x, transform.position.y, request.receivingTileClass.transform.position.z));
+            navMeshAgent.SetDestination(new Vector3(request.receivingTileClass.transform.position.x, transform.position.y, request.receivingTileClass.transform.position.z));*/
 
         // then wait for the drone to get to the location
         yield return new WaitUntil(AtTaskLocation);
@@ -237,20 +265,11 @@ public class Drone : MonoBehaviour
         // then deliver the items
         if (request.receivingBuilding != null)
         {
+            // debug
+            Debug.Log("items delivered");   
+
             // add to the building
             request.receivingBuilding.storedItems.Add(request.requestedItem, storedItems[request.requestedItem]);
-            // remove from ourselves
-            storedItems[request.requestedItem] -= request.requestedAmount;
-            // we have successfully completed the task of delivery
-            request.CompleteRequest();
-        }
-        else if(request.receivingTileClass != null)
-        {
-            // does the building already have the key that we need?
-            if (request.receivingTileClass.storedItems.ContainsKey(request.requestedItem))
-                request.receivingTileClass.storedItems[request.requestedItem] += request.requestedAmount;
-            else // if it doesn't have the key then add to the building
-            request.receivingTileClass.storedItems.Add(request.requestedItem, storedItems[request.requestedItem]);
             // remove from ourselves
             storedItems[request.requestedItem] -= request.requestedAmount;
             // we have successfully completed the task of delivery

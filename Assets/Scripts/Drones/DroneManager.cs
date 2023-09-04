@@ -47,15 +47,18 @@ public class DroneRequest
     }
 
     // for construction, add deliveries for the items we need
-    public void CreateDeliveriesForConstruction()
+    public void CreateDeliveriesForConstruction(Building building)
     {
+        Debug.Log("deliveries being requested for new building");
+        // create new requests for all the construction requirements
         foreach(var item in constructionRequirements)
         {
             DroneRequest droneRequest = new DroneRequest();
-            droneRequest.requestType = RequestTypes.delivery;
-            droneRequest.requestedItem = item.Key;
-            droneRequest.requestedAmount = item.Value;
-            droneRequest.receivingTileClass = receivingTileClass;
+            droneRequest.requestType = RequestTypes.delivery; // this is a delivery request
+            droneRequest.requestedItem = item.Key; // what item?
+            droneRequest.requestedAmount = item.Value; // how many of that item?
+            droneRequest.receivingBuilding = building; // where are we sending the items?
+            building.deliveriesRequested = true; // tell the building that the deliveries have been requested
             // add this request to the list
             DroneManager.instance.droneRequests.Add(droneRequest);
             Debug.Log(droneRequest.requestType.ToString() + " request created");

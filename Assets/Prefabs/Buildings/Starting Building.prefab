@@ -51,10 +51,10 @@ MonoBehaviour:
   buildingFlavor: A test building
   buildingInfo: 
   storageMaximum: 10000
-  itemRequiredTypes: 02000000
-  itemRequiredCounts:
-  - 10
+  itemRequiredConstructionTypes: 
+  itemRequiredConstructionCounts: []
   inputOnlyItems: 
+  buildingConstructed: 1
   startingItems: 02000000
   startingItemCounts:
   - 500
@@ -112,7 +112,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1 &2988927925307692062
 GameObject:
