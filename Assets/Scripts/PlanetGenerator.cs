@@ -24,6 +24,8 @@ public class PlanetGenerator : MonoBehaviour
     // the list of tile prefabs that we are going to use to instantiate our planet
     [SerializeField] List<GameObject> tilePrefabs = new List<GameObject>();
     [SerializeField] List<int> tileWeights = new List<int>();
+    float totalWeight; // our total weight
+    bool navigationInitialized = false; // have we done our navigation yet?
 
     // here is our list of special tiles that are added into the mix after the generation is complete, and before the tiles are instantiated
     [SerializeField] List<GameObject> specialTiles = new List<GameObject>();
@@ -37,11 +39,91 @@ public class PlanetGenerator : MonoBehaviour
     private void Start()
     {
         if (canGen)
-            GeneratePlanet();
+            GeneratePlanetUsingPerlinNoise();
+        // GeneratePlanetUsingBreadth();
+
+    }
+
+    // everything to do with perlin noise
+    public float perlinScale, perlinHeightScale, perlinHeightMultiplier, xOrg, yOrg; // the scale of our perlin noise
+
+    void GeneratePlanetUsingPerlinNoise()
+    {
+        // use our total tile weight
+        // get the total size of our weights
+        totalWeight = 0;
+        foreach (int t in tileWeights)
+            totalWeight += t;
+
+        Debug.Log("total weight: " + totalWeight);
+        // make sure our planet grid is ready to go
+        PlanetTiles = new TileClass[PlanetSize, PlanetSize];
+
+        // let's create some grid data to reference what we are spawning in
+        int[,] LookupGrid = new int[PlanetSize, PlanetSize];
+
+        // randomly throughout the grid, place weighted numbers in it to assign regions to the space
+        for (int lx = 0; lx < PlanetSize; lx++)
+        {
+            for (int ly = 0; ly < PlanetSize; ly++)
+            {
+                // create a planet based on a scale from 0.0 to 1.0 through perlin noise by comparing our weighted scale to it then convert that to the LookupGrid data
+                LookupGrid[lx, ly] = FindWeight(Mathf.PerlinNoise((xOrg + lx * perlinScale) / PlanetSize, (yOrg + ly * perlinScale) / PlanetSize));
+            }
+        }
+
+        // output our grid
+        GeneratedGrid = new int[PlanetSize, PlanetSize];
+        GeneratedGrid = LookupGrid;
+
+        // add in special tiles
+        SpecialTilePlacement();
+
+        /*
+        // spawn the planet
+        for (int x = 0; x < PlanetSize; x++)
+        {
+            for (int y = 0; y < PlanetSize; y++)
+            {
+                SpawnTile(x, y);
+            }
+        }*/
+
+        // initialize our navigation mesh
+        // InitializeNav();
+    }
+
+    // returns a value from 0.0 to 1.0 on the weight scale, and returns an integer of what tile to spawn
+    int FindWeight(float perlinFloat)
+    {
+        // choose our number from our perlin float
+        float i = perlinFloat * totalWeight;
+        // our total counting upwards
+        int tx = 0;
+        // then check against the pool
+        for (int x = 0; x < tileWeights.Count; x++)
+        {
+            // check to see if it is between the current weight and the next weight
+            if (x <= tileWeights.Count)
+            {
+                // if we are checking anything but the first or last index...
+                if (i > tx && i < tx + tileWeights[x] || i == tx || i == tileWeights[x])
+                {
+                    return x;
+                }
+            }
+
+            // if we havent found the number, add our current weight to tx
+            tx += tileWeights[x];
+        }
+
+
+        // if we failed, return 0 for the red cube
+        return 0;
     }
 
     // our generation function
-    private void GeneratePlanet()
+    private void GeneratePlanetUsingBreadth()
     {
         // make sure our planet grid is ready to go
         PlanetTiles = new TileClass[PlanetSize, PlanetSize];
@@ -91,6 +173,12 @@ public class PlanetGenerator : MonoBehaviour
             }
         }
 
+    }
+
+    // use this to initialize our navigation mesh
+    void InitializeNav()
+    {
+        navigationInitialized = true;
         // once the planet is ready, bake our navigation map
         PlanetTiles[0, 0].gameObject.GetComponent<NavMeshSurface>().BuildNavMesh();
     }
@@ -289,13 +377,29 @@ public class PlanetGenerator : MonoBehaviour
     // spawning tiles one at a time
     void FrametimeTileSpawning()
     {
-        SpawnTile(x, y);
-        x++; 
-        if (x >= PlanetSize)
+        if (x < PlanetSize && y < PlanetSize)
         {
-            x = 0;
-            y++;
+            SpawnTile(x, y);
+            x++;
+            if (x >= PlanetSize)
+            {
+                x = 0;
+                y++;
+            }
         }
+
+        // once all the tiles have been spawned, enable their nav mesh surfaces
+        /*
+        if (transform.childCount == PlanetSize * PlanetSize && !navigationInitialized)
+        {
+            Debug.Log("init");
+            foreach (TileClass tile in PlanetTiles)
+                tile.navMeshSurface.enabled = true;
+
+            // then bake the map
+            // InitializeNav();
+        }*/
+
     }
 
     // spawn in tiles based off of information
@@ -304,16 +408,23 @@ public class PlanetGenerator : MonoBehaviour
         if (GeneratedGrid[x, z] < tilePrefabs.Count)
         {
             // place a tile according to the lookup grid's information
-            TileClass tile = Instantiate(tilePrefabs[GeneratedGrid[x, z]], new Vector3(transform.position.x + x, 0, transform.position.z + z), Quaternion.Euler(0, Random.Range(0, 5) * 90, 0), transform).GetComponent<TileClass>();
-            // add that to our final reference grid of tiles
-            PlanetTiles[x, z] = tile;
+            PlanetTiles[x, z] = Instantiate(tilePrefabs[GeneratedGrid[x, z]], new Vector3(transform.position.x + x, Mathf.PerlinNoise(((float)x * perlinHeightScale) / (float)PlanetSize, ((float)z * perlinHeightScale) / (float)PlanetSize) * perlinHeightMultiplier, transform.position.z + z), Quaternion.Euler(0, Random.Range(0, 5) * 90, 0), transform).GetComponent<TileClass>();
         }
         else
         {
             // place a tile according to the lookup grid's information
-            TileClass tile = Instantiate(specialTiles[tilePrefabs.Count+1-GeneratedGrid[x, z]], new Vector3(transform.position.x + x, 0, transform.position.z + z), Quaternion.Euler(0, Random.Range(0, 5) * 90, 0), transform).GetComponent<TileClass>();
-            // add that to our final reference grid of tiles
-            PlanetTiles[x, z] = tile;
+            PlanetTiles[x, z] = Instantiate(specialTiles[tilePrefabs.Count+1-GeneratedGrid[x, z]], new Vector3(transform.position.x + x, 0, transform.position.z + z), Quaternion.Euler(0, Random.Range(0, 5) * 90, 0), transform).GetComponent<TileClass>();
+        }
+    }
+
+    // update
+    private void Update()
+    {
+        int h = 0;
+        while (h < 1000)
+        {
+            FrametimeTileSpawning();
+            h++;
         }
     }
 

@@ -129,8 +129,19 @@ public class Drone : MonoBehaviour
     // our exploration behaviour
     IEnumerator ExploreBehaviour()
     {
+        // make sure we can actually do the thing we want to do before attempting it
+        if (PlanetGenerator.instance.transform.childCount < PlanetGenerator.instance.PlanetSize * PlanetGenerator.instance.PlanetSize)
+        {
+            // wait a second before testing again
+            yield return new WaitForSecondsRealtime(1f);
+            // start the next state
+            SetBehaviour();
+            yield break;
+        }
+
         // find the nearest unscanned tile to us
-        float closestDistance = PlanetGenerator.instance.PlanetSize; TileClass closestTile = PlanetGenerator.instance.PlanetTiles[0,0]; 
+        float closestDistance = PlanetGenerator.instance.PlanetSize; TileClass closestTile = PlanetGenerator.instance.PlanetTiles[0,0];
+
         foreach (TileClass tile in PlanetGenerator.instance.PlanetTiles)
         {
             if (Vector3.Distance(tile.transform.position, transform.position) < closestDistance && tile.tileScanned == false)

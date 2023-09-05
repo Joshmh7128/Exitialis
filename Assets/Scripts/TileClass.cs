@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TileClass : MonoBehaviour
 {
@@ -10,14 +12,10 @@ public class TileClass : MonoBehaviour
     public string tileName, tileFlavorText; // our tile's name, ex: Grass Tile, Desert Tile
     public bool tileScanned, priorityScan, hasBuilding, buildingRequested; // has this tile been scanned? does it want a priority scan? does this tile have a building?
     [SerializeField] MeshRenderer tileRenderer;
+    public NavMeshSurface navMeshSurface; // our nav mesh surface
 
     // items we can have delivered for building construction
     public Dictionary<Building.Itemtypes, float> storedItems = new Dictionary<Building.Itemtypes, float>();
-
-    private void Start()
-    {
-        CheckScan();
-    }
 
     private void OnMouseEnter()
     {
